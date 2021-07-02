@@ -1,0 +1,11 @@
+{
+  "name": "mario-clone",
+  "version": "1.0.0",
+  "description": "Mario clone using Kaboom JS from Ania Kubow tutorial",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Allan Oliveira",
+  "license": "ISC"
+}
