@@ -17,11 +17,11 @@ const SPRITE_COIN = 'coin',
     SPRITE_PIPE_TOP_LEFT = 'pipe-top-left',
     SPRITE_PIPE_TOP_RIGHT = 'pipe-top-right',
     SPRITE_PIPE_BOTTOM_LEFT = 'pipe-bottom-left',
-    SPRITE_PIPE_BOTTOM_RIGHT = 'pipe-bottom-right';
-    SPRITE_BLUE_BLOCK = 'blue-block';
-    SPRITE_BLUE_BRICK = 'blue-brick';
-    SPRITE_BLUE_STEEL = 'blue-steel';
-    SPRITE_BLUE_EVIL_SHROOM = 'blue-evil-shroom';
+    SPRITE_PIPE_BOTTOM_RIGHT = 'pipe-bottom-right',
+    SPRITE_BLUE_BLOCK = 'blue-block',
+    SPRITE_BLUE_BRICK = 'blue-brick',
+    SPRITE_BLUE_STEEL = 'blue-steel',
+    SPRITE_BLUE_EVIL_SHROOM = 'blue-evil-shroom',
     SPRITE_BLUE_SURPRISE = 'blue-surprise';
 // Speed consts
 const SPEED_ENEMY = 20,
@@ -120,10 +120,10 @@ k.scene("game", ({ score, level }) => {
         }
     ]);
     
-    console.log(`level: ${level} - maps.length: ${maps.length}`);
-    if(level >= maps.length) {
-        k.go('lose', { score: scoreLabel.value });
-    }
+    // console.log(`level: ${level} - maps.length: ${maps.length}`);
+    // if(level >= maps.length) {
+    //     k.go('lose', { score: scoreLabel.value });
+    // }
     const gameLevel = k.addLevel(maps[level], levelCfg);
 
     k.add([k.text(`level ${parseInt(level, 10) + 1}`), k.pos(4,6)]);
