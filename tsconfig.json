@@ -5,16 +5,14 @@
     "isolatedModules": true,
     //"strict": true,
     "module": "es6",
-    "target": "es5",
+    "target": "es6",
     "allowJs": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
+    //"sourceMap": true,
+    //"inlineSourceMap": true,  /* Already set in webpack config */
   },
 
-//   "compilerOptions": {
-//     "target": "esnext"
-//   },
 //   "include": ["src/**/*.ts"]
 }

@@ -3,9 +3,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "development", // Not for prod obviously
-  devtool: "eval-source-map",
+  devtool: "inline-source-map",
   devServer: {
     contentBase: ".dist",
+    hot: true,
   },
   entry: {
     game: "./src/game.ts",
