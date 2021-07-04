@@ -1,5 +1,5 @@
-//import kb, { KaboomCtx, LevelConf } from 'kaboom';
-import * as kb from 'kaboom';
+import kb, { KaboomCtx, LevelConf } from 'kaboom';
+//import * as kb from 'kaboom';
 //import { KaboomCtx, LevelConf } from 'kaboom';
 
 // Import these (later)
@@ -31,7 +31,7 @@ const SPEED_ENEMY = 20,
 // Position consts
 const FALL_DEATH = 400;
 
-const k: kb.KaboomCtx = kb.default({
+const k: KaboomCtx = kb({
     fullscreen: true,
     scale: 1,
     debug: true,
@@ -65,7 +65,7 @@ k.scene("game", ({ score, level }) => {
             '                                     ',
             '                                     ',
             '                                     ',
-            '                                     ',
+            '            %                        ',
             '                                     ',
             '                                     ',
             '                                     ',
@@ -92,7 +92,7 @@ k.scene("game", ({ score, level }) => {
         ],
     ];
 
-    const levelCfg: kb.LevelConf = {
+    const levelCfg: LevelConf = {
         width: 20,
         height: 20,
         "=": [k.sprite(SPRITE_BLOCK), k.solid()],
@@ -108,7 +108,7 @@ k.scene("game", ({ score, level }) => {
         "#": [k.sprite(SPRITE_MUSHROOM), k.solid(), 'mushroom', k.body()],
         "!": [k.sprite(SPRITE_BLUE_BLOCK), k.solid(), k.scale(0.5)],
         "£": [k.sprite(SPRITE_BLUE_BRICK), k.solid(), k.scale(0.5)],
-        "z": [k.sprite(SPRITE_BLUE_EVIL_SHROOM), k.solid(), k.scale(0.5), 'dangerous'],
+        "z": [k.sprite(SPRITE_BLUE_EVIL_SHROOM), k.scale(0.5), 'dangerous'],
         "@": [k.sprite(SPRITE_BLUE_SURPRISE), k.solid(), k.scale(0.5), 'coin-surprise'],
         "x": [k.sprite(SPRITE_BLUE_STEEL), k.solid(), k.scale(0.5)],
         any(ch) { return [] },
