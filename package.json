@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack --watch",
-    "start": "webpack server --open",
+    "watch": "webpack --watch --progress",
+    "start": "webpack serve --open --hot",
     "build": "webpack"
   },
   "author": "Allan Oliveira",

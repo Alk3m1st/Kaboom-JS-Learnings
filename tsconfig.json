@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
-    //"noImplicitAny": true,
     "isolatedModules": true,
-    //"strict": true,
+    "strict": true,
     "module": "es6",
     "target": "es6",
     "allowJs": false,
@@ -12,7 +11,16 @@
     "allowSyntheticDefaultImports": true,
     //"sourceMap": true,
     //"inlineSourceMap": true,  /* Already set in webpack config */
+    // *** Consider the following inclusions below? ***
+    // "rootDir": "./src",
+    // "removeComments": true,
+    // "noEmit": true,
+    // "baseUrl": "./src",
+    // "useDefineForClassFields": true,
+    // "resolveJsonModule": true,
+    // "skipLibCheck": true,
+    // "lib": ["ES2020"],
   },
-
-//   "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"],
 }
