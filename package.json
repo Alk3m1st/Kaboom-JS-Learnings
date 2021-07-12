@@ -10,7 +10,7 @@
     "build": "webpack"
   },
   "author": "Allan Oliveira",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "html-webpack-plugin": "^5.3.2",
     "ts-loader": "^9.2.3",
