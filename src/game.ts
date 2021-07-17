@@ -1,30 +1,32 @@
 import kb, { KaboomCtx, LevelConf, GameObj, Comp } from "kaboom";
-//import * as kb from 'kaboom';
-//import { KaboomCtx, LevelConf } from 'kaboom';
+import { SystemCollisions } from "./systems";
+import { EntityPlayer } from "./entities/entity.player";
+import {
+  ENEMY,
+  SPRITE_COIN,
+  SPRITE_BLOCK,
+  SPRITE_BLUE_BLOCK,
+  SPRITE_BLUE_BRICK,
+  SPRITE_BLUE_EVIL_SHROOM,
+  SPRITE_BLUE_STEEL,
+  SPRITE_BLUE_SURPRISE,
+  SPRITE_BRICK,
+  SPRITE_EVIL_SHROOM,
+  SPRITE_MARIO,
+  SPRITE_MUSHROOM,
+  SPRITE_PIPE_BOTTOM_LEFT,
+  SPRITE_PIPE_BOTTOM_RIGHT,
+  SPRITE_PIPE_TOP_LEFT,
+  SPRITE_PIPE_TOP_RIGHT,
+  SPRITE_SURPRISE,
+  SPRITE_UNBOXED,
+} from "./constants";
 
 // Import these (later)
 // Layer consts
 const LAYER_BG = "bg",
   LAYER_OBJ = "obj",
   LAYER_UI = "ui";
-// Sprite consts
-const SPRITE_COIN = "coin",
-  SPRITE_EVIL_SHROOM = "evil-shroom",
-  SPRITE_BRICK = "brick",
-  SPRITE_BLOCK = "block",
-  SPRITE_MARIO = "mario",
-  SPRITE_MUSHROOM = "mushroom",
-  SPRITE_SURPRISE = "surprise",
-  SPRITE_UNBOXED = "unboxed",
-  SPRITE_PIPE_TOP_LEFT = "pipe-top-left",
-  SPRITE_PIPE_TOP_RIGHT = "pipe-top-right",
-  SPRITE_PIPE_BOTTOM_LEFT = "pipe-bottom-left",
-  SPRITE_PIPE_BOTTOM_RIGHT = "pipe-bottom-right",
-  SPRITE_BLUE_BLOCK = "blue-block",
-  SPRITE_BLUE_BRICK = "blue-brick",
-  SPRITE_BLUE_STEEL = "blue-steel",
-  SPRITE_BLUE_EVIL_SHROOM = "blue-evil-shroom",
-  SPRITE_BLUE_SURPRISE = "blue-surprise";
 // Speed consts
 const SPEED_ENEMY = 20,
   SPEED_MUSHROOM = 50;
@@ -72,7 +74,7 @@ k.scene("game", ({ score, level }) => {
       "     %   =*=%=                       ",
       "                                     ",
       "                            -+       ",
-      "                  ^    ^    ()       ",
+      "        ^         ^    ^    ()       ",
       "==============================  =====",
     ],
     [
@@ -104,11 +106,11 @@ k.scene("game", ({ score, level }) => {
     ")": [k.sprite(SPRITE_PIPE_BOTTOM_RIGHT), k.solid(), k.scale(0.5)],
     "-": [k.sprite(SPRITE_PIPE_TOP_LEFT), k.solid(), k.scale(0.5), "pipe"],
     "+": [k.sprite(SPRITE_PIPE_TOP_RIGHT), k.solid(), k.scale(0.5), "pipe"],
-    "^": [k.sprite(SPRITE_EVIL_SHROOM), "dangerous"],
+    "^": [k.sprite(SPRITE_EVIL_SHROOM), ENEMY],
     "#": [k.sprite(SPRITE_MUSHROOM), k.solid(), "mushroom", k.body()],
     "!": [k.sprite(SPRITE_BLUE_BLOCK), k.solid(), k.scale(0.5)],
     "£": [k.sprite(SPRITE_BLUE_BRICK), k.solid(), k.scale(0.5)],
-    z: [k.sprite(SPRITE_BLUE_EVIL_SHROOM), k.scale(0.5), "dangerous"],
+    z: [k.sprite(SPRITE_BLUE_EVIL_SHROOM), k.scale(0.5), ENEMY],
     "@": [
       k.sprite(SPRITE_BLUE_SURPRISE),
       k.solid(),
@@ -131,45 +133,29 @@ k.scene("game", ({ score, level }) => {
   ]);
 
   console.log(`level: ${level} - maps.length: ${maps.length}`);
-  // if(level >= maps.length) {
-  //     k.go('lose', { score: scoreLabel.value });
-  // }
+
   const gameLevel = k.addLevel(maps[level], levelCfg);
   k.add([k.text(`level ${parseInt(level, 10) + 1}`), k.pos(4, 6)]);
   level++; // Increment level for the next playthrough
 
   const player = setUpPlayer(k);
 
-  // Spawn from boxes
-  player.on("headbump", (obj: GameObj) => {
-    if (obj.is("coin-surprise")) {
-      gameLevel.spawn("$", obj.gridPos.sub(0, 1));
-      k.destroy(obj);
-      gameLevel.spawn("}", obj.gridPos.sub(0, 0));
-    }
-    if (obj.is("mushroom-surprise")) {
-      gameLevel.spawn("#", obj.gridPos.sub(0, 1));
-      k.destroy(obj);
-      gameLevel.spawn("}", obj.gridPos.sub(0, 0));
-    }
-  });
+  let collisionsSystem = new SystemCollisions(player, k);
+  collisionsSystem.SetUpEnemyCollisions();
+  collisionsSystem.SetUpEnvironmentCollisions(gameLevel);
 
   // Make things move
   k.action("mushroom", (m) => {
     m.move(SPEED_MUSHROOM, 0);
   });
-  k.action("dangerous", (d) => {
+  k.action(ENEMY, (d) => {
     d.move(-SPEED_ENEMY, 0);
   });
 
   // Player actions
   player.action(() => {
-    if (player.grounded()) {
-      player.setJumping(false);
-    }
-  });
-  player.action(() => {
     k.camPos(player.pos);
+
     if (player.pos.y >= FALL_DEATH) {
       k.go("lose", { score: scoreLabel.value });
     }
@@ -185,13 +171,13 @@ k.scene("game", ({ score, level }) => {
     scoreLabel.value += 10;
     scoreLabel.text = scoreLabel.value;
   });
-  player.collides("dangerous", (d: GameObj) => {
-    if (player.isJumping()) {
-      k.destroy(d);
-    } else {
-      k.go("lose", { score: scoreLabel.value });
-    }
+
+  // End game if player dies
+  player.on("destroy", () => {
+    console.log("You died");
+    k.go("lose", { score: scoreLabel.value });
   });
+
   player.collides("pipe", () => {
     k.keyPress("down", () => {
       console.log(
@@ -220,28 +206,19 @@ k.scene("lose", ({ score }) => {
 
 k.start("game", { score: 0, level: 0 });
 
-const setUpPlayer = (k: KaboomCtx): Omit<GameObj, "hidden"> => {
+// *** animations?
+const setUpPlayer = (k: KaboomCtx): GameObj => {
   const MOVE_SPEED = 120;
   const JUMP_FORCE = 360;
   const BIG_JUMP_FORCE = 550;
 
-  const player: Omit<GameObj, "hidden"> = k.add([
-    k.sprite(SPRITE_MARIO),
-    k.solid(),
-    k.pos(30, 10),
-    k.body(),
-    isJumping(),
-    big(),
-    k.origin("bot"),
-  ]);
+  const playerEntity = new EntityPlayer(k);
+  const player = playerEntity.Player;
 
   // Player movement / keys
   k.keyPress("space", () => {
     if (player.grounded()) {
       let currentJumpForce = JUMP_FORCE;
-      player.setJumping(true);
-      console.log(`Player isJumping? after space: ${player.isJumping()}`);
-
       if (player.isBig()) currentJumpForce = BIG_JUMP_FORCE;
 
       player.jump(currentJumpForce);
@@ -255,44 +232,4 @@ const setUpPlayer = (k: KaboomCtx): Omit<GameObj, "hidden"> => {
   });
 
   return player;
-};
-
-const isJumping = () => {
-  let isJ = true;
-  return {
-    isJumping() {
-      return isJ;
-    },
-    setJumping(isJumping: boolean) {
-      isJ = isJumping;
-    },
-  };
-};
-
-const big = (): Comp => {
-  let timer = 0;
-  let isBig = false;
-  return {
-    update() {
-      if (isBig) {
-        timer -= k.dt();
-        if (timer <= 0) {
-          this.smallify();
-        }
-      }
-    },
-    isBig() {
-      return isBig;
-    },
-    smallify() {
-      this.scale = k.vec2(1);
-      timer = 0;
-      isBig = false;
-    },
-    biggify(time: number) {
-      this.scale = k.vec2(2);
-      timer = time;
-      isBig = true;
-    },
-  };
 };
