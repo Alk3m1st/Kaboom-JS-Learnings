@@ -1,5 +1,6 @@
 import { GameObj, KaboomCtx, Comp } from "kaboom";
 import { SPRITE_MARIO } from "../constants";
+import { ScoreComponent } from "../components";
 
 export class EntityPlayer {
   private _player: GameObj;
@@ -10,7 +11,6 @@ export class EntityPlayer {
       kb.solid(),
       kb.pos(30, 10),
       kb.body(),
-    //   this.isJumping(),
       this.big(kb),
       kb.origin("bot"),
     ]);
@@ -19,19 +19,6 @@ export class EntityPlayer {
   public get Player() {
     return this._player;
   }
-
-  // Possibly move methods to System (Player)?
-//   private isJumping(): Object {
-//     let isJ = true;
-//     return {
-//       isJumping() {
-//         return isJ;
-//       },
-//       setJumping(isJumping: boolean) {
-//         isJ = isJumping;
-//       },
-//     };
-//   }
 
   private big(k: KaboomCtx): Comp {
     let timer = 0;
