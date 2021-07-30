@@ -21,6 +21,6 @@
     // "skipLibCheck": true,
     // "lib": ["ES2020"],
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "index.d.ts"],
   "exclude": ["node_modules"],
 }
