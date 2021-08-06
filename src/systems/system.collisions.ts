@@ -11,7 +11,7 @@ import {
 export class SystemCollisions {
   public static SetUpEnemyCollisions(player: GameObj, k: KaboomCtx) {
     console.log("In collisions set up function");
-    player.collides(ENEMY, (enemy: GameObj) => {
+    player.overlaps(ENEMY, (enemy: GameObj) => {
       if (!player.grounded()) {
         k.destroy(enemy);
       } else {
