@@ -1,14 +1,17 @@
 import { GameObj, KaboomCtx, Comp } from "kaboom";
-import { SPRITE_MARIO } from "../constants";
-import { ScoreComponent } from "../components";
+import { SPRITE_PLAYER } from "../constants";
 
 export class EntityPlayer {
   private _player: GameObj;
 
   constructor(kb: KaboomCtx) {
     this._player = kb.add([
-      kb.sprite(SPRITE_MARIO),
+      kb.sprite(SPRITE_PLAYER, {
+        animSpeed: 0.1, // time per frame (defaults to 0.1)
+        frame: 0, // start frame (defaults to 0)
+      }),
       kb.solid(),
+      kb.scale(1.5),
       kb.pos(30, 10),
       kb.body(),
       this.big(kb),
@@ -36,7 +39,7 @@ export class EntityPlayer {
         return isBig;
       },
       smallify() {
-        this.scale = k.vec2(1);
+        this.scale = k.vec2(1.5);
         timer = 0;
         isBig = false;
       },
