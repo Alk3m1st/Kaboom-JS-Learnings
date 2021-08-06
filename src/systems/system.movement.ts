@@ -7,12 +7,26 @@ export abstract class SystemMovement {
 
   public static SetUpMovement(player: GameObj, k: KaboomCtx): void {
     k.keyDown("right", () => {
+      player.flipX(1);
       player.move(this.MOVE_SPEED, 0);
+    });
+    k.keyPress("right", () => {
+      player.play("walk");
+    });
+    k.keyRelease("right", () => {
+      player.stop();
     });
 
     k.keyDown("left", () => {
+      player.flipX(-1);
       player.move(-this.MOVE_SPEED, 0);
     });
+    k.keyPress("left", () => {
+      player.play("walk");
+    });
+    k.keyRelease("left", () => {
+      player.stop();
+    })
 
     k.keyPress("space", () => {
       if (player.grounded()) {
