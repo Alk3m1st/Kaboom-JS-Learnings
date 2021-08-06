@@ -27,12 +27,33 @@ module.exports = {
     }),
   ],
   output: {
+    assetModuleFilename: "images/[hash][ext][query]",
     filename: "[name].[fullhash].bundle.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
+    publicPath: "/",
   },
   module: {
     rules: [
+      {
+        test: /\.png$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "assets/images/",
+            },
+          },
+        ],
+      },
+      {
+        test: /\.json/,
+        type: "asset/source",
+        generator: {
+          filename: "static/[hash][ext][query]",
+        },
+      },
       {
         test: /\.ts$/,
         use: "ts-loader",
@@ -41,6 +62,6 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".tsx", ".ts", ".js", ".png"],
   },
 };
