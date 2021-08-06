@@ -1,6 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { transpileModule } = require("typescript");
+//const { transpileModule } = require("typescript");
 
 module.exports = {
   mode: "development", // Not for prod obviously
@@ -36,23 +36,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.png$/,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]",
-              outputPath: "assets/images/",
-            },
-          },
-        ],
-      },
-      {
-        test: /\.json/,
-        type: "asset/source",
-        generator: {
-          filename: "static/[hash][ext][query]",
-        },
+        test: /\.png/,
+        type: "asset/resource",
       },
       {
         test: /\.ts$/,
