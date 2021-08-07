@@ -18,8 +18,8 @@ import {
   SPRITE_UNBOXED,
   SPRITE_PLAYER,
 } from "../constants";
-import GeneralSprite from "../assets/images/sprite.png";
-import DinoSprite from "../assets/images/DinoSprites - doux.png";
+import GeneralSprite from "@assets/images/sprite.png";
+import DinoSprite from "@assets/images/DinoSprites - doux.png";
 
 export abstract class SystemSpriteLoader {
   private static readonly rootDomain: string = "https://i.imgur.com/";
@@ -35,7 +35,8 @@ export abstract class SystemSpriteLoader {
 
   private static LoadPlayerSprite(kb: KaboomCtx): void {
     kb.loadSprite(SPRITE_PLAYER, DinoSprite, {
-      sliceX: 24,
+      //sliceX: 24,
+      gridWidth: 24,
       anims: {
         walk: {
           from: 5,

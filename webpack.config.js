@@ -45,15 +45,20 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.wav/,
+        test: /\.(mp3|wav)$/i,
         type: "asset/resource",
         generator: {
-          filename: 'sounds/[hash][ext][query]',
+          filename: "sounds/[hash][ext][query]",
         },
       },
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js", ".png"],
+    extensions: [".tsx", ".ts", ".js"],
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+      "@assets": path.resolve(__dirname, "src/assets"),
+      "@components": path.resolve(__dirname, "src/components"),
+    },
   },
 };
