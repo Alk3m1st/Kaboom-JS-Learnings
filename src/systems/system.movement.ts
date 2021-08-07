@@ -1,8 +1,9 @@
 import { GameObj, KaboomCtx } from "kaboom";
+import { SOUND_JUMP } from "../constants";
 
 export abstract class SystemMovement {
   private static MOVE_SPEED: number = 120;
-  private static JUMP_FORCE: number = 360;
+  private static JUMP_FORCE: number = 400;
   private static BIG_JUMP_FORCE: number = 550;
 
   public static SetUpMovement(player: GameObj, k: KaboomCtx): void {
@@ -34,8 +35,8 @@ export abstract class SystemMovement {
         let currentJumpForce = this.JUMP_FORCE;
         if (player.isBig()) currentJumpForce = this.BIG_JUMP_FORCE;
 
-        player.jump(currentJumpForce);
-        k.play("jump");
+        player.jump(currentJumpForce);  // Jump Sound
+        k.play(SOUND_JUMP);
       }
     });
   }

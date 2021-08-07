@@ -6,14 +6,18 @@ import {
   MUSHROOM_SURPRISE,
   COIN,
   MUSHROOM,
+  SOUND_MUSHROOM_COLLECT,
+  SOUND_COIN_COLLECT,
+  SOUND_SQUASH_MUSHROOM,
+  SOUND_BLOCK_HIT,
 } from "../constants";
 
 export class SystemCollisions {
   public static SetUpEnemyCollisions(player: GameObj, k: KaboomCtx) {
-    console.log("In collisions set up function");
     player.overlaps(ENEMY, (enemy: GameObj) => {
       if (!player.grounded()) {
         k.destroy(enemy);
+        k.play(SOUND_SQUASH_MUSHROOM);
       } else {
         k.destroy(player);
       }
@@ -31,11 +35,13 @@ export class SystemCollisions {
       if (obj && obj.is(COIN_SURPRISE)) {
         gameLevel.spawn("$", obj.gridPos.sub(0, 1));
         k.destroy(obj);
+        k.play(SOUND_BLOCK_HIT);
         gameLevel.spawn("}", obj.gridPos.sub(0, 0));
       }
       if (obj && obj.is(MUSHROOM_SURPRISE)) {
         gameLevel.spawn("#", obj.gridPos.sub(0, 1));
         k.destroy(obj);
+        k.play(SOUND_BLOCK_HIT);
         gameLevel.spawn("}", obj.gridPos.sub(0, 0));
       }
     });
@@ -43,11 +49,13 @@ export class SystemCollisions {
     player.collides(MUSHROOM, (m: GameObj) => {
       k.destroy(m);
       player.biggify(6);
+      k.play(SOUND_MUSHROOM_COLLECT);
       scoreLabel.increaseScore(10); // TODO: Move to own system?
     });
 
     player.collides(COIN, (c: GameObj) => {
       k.destroy(c);
+      k.play(SOUND_COIN_COLLECT);
       scoreLabel.increaseScore(10); // TODO: Move to own system?
     });
   }
