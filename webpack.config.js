@@ -36,13 +36,20 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.png/,
+        test: /\.(png|jpg|gif)$/i,
         type: "asset/resource",
       },
       {
         test: /\.ts$/,
         use: "ts-loader",
         exclude: /node_modules/,
+      },
+      {
+        test: /\.wav/,
+        type: "asset/resource",
+        generator: {
+          filename: 'sounds/[hash][ext][query]',
+        },
       },
     ],
   },

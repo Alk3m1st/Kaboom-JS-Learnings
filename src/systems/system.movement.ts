@@ -26,6 +26,7 @@ export abstract class SystemMovement {
     });
     k.keyRelease("left", () => {
       player.stop();
+      //.play("idle")
     })
 
     k.keyPress("space", () => {
@@ -34,6 +35,7 @@ export abstract class SystemMovement {
         if (player.isBig()) currentJumpForce = this.BIG_JUMP_FORCE;
 
         player.jump(currentJumpForce);
+        k.play("jump");
       }
     });
   }

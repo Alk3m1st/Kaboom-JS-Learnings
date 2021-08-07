@@ -1,8 +1,9 @@
 import k from "./kaboom.context";
-import { SystemSpriteLoader } from "./systems";
+import { SystemSpriteLoader, SystemSoundLoader } from "./systems";
 import { SceneMain } from "./scenes";
 
 SystemSpriteLoader.LoadAllSprites(k);
+SystemSoundLoader.LoadSounds(k);
 
 k.scene("game", SceneMain);
 
