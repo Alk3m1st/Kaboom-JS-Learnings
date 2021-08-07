@@ -10,12 +10,13 @@ export class EntityPlayer {
         animSpeed: 0.1, // time per frame (defaults to 0.1)
         frame: 0, // start frame (defaults to 0)
       }),
+      kb.area(kb.vec2(-7, -9), kb.vec2(7, 9)),  // Adjust sprite collision area
       kb.solid(),
       kb.scale(1.5),
       kb.pos(30, 10),
       kb.body(),
       this.big(kb),
-      kb.origin("bot"),
+      kb.origin("center"),
     ]);
   }
 
