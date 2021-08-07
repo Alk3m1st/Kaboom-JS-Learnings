@@ -1,4 +1,4 @@
-import { KaboomCtx, SpriteData } from "kaboom";
+import { KaboomCtx } from "kaboom";
 import {
   SPRITE_COIN,
   SPRITE_BLOCK,
@@ -18,16 +18,8 @@ import {
   SPRITE_UNBOXED,
   SPRITE_PLAYER,
 } from "../constants";
-//import PlayerSprite from "../assets/images/sprite.png";
+import GeneralSprite from "../assets/images/sprite.png";
 import DinoSprite from "../assets/images/DinoSprites - doux.png";
-
-interface KaboomCtxWithAseprite extends KaboomCtx {
-    loadAseprite(
-        name: string, 
-        imgSrc: string, 
-        jsonSrc: string
-    ): Promise<SpriteData>;
-}
 
 export abstract class SystemSpriteLoader {
   private static readonly rootDomain: string = "https://i.imgur.com/";
@@ -73,5 +65,9 @@ export abstract class SystemSpriteLoader {
     kb.loadSprite(SPRITE_BLUE_BLOCK, `${this.rootDomain}fVscIbn.png`);
     kb.loadSprite(SPRITE_BLUE_BRICK, `${this.rootDomain}3e5YRQd.png`);
     kb.loadSprite(SPRITE_BLUE_STEEL, `${this.rootDomain}gqVoI2b.png`);
+    kb.loadSprite("SPRITE_General", GeneralSprite, {
+      sliceX: 13,
+      sliceY: 9,
+    });
   }
 }
