@@ -75,14 +75,14 @@ export function SceneMain(args: SceneMainArgs) {
     k.camPos(player.pos);
 
     if (player.pos.y >= FALL_DEATH) {
-      k.go("lose", { score: scoreLabel.score() });
+      k.go("lose", { k: k, score: scoreLabel.score() });
     }
   });
 
   // End game if player dies
   player.on(DESTROY, () => {
     k.play(SOUND_PLAYER_DEATH);
-    k.go("lose", { score: scoreLabel.score() });
+    k.go("lose", { k: k, score: scoreLabel.score() });
   });
 
   // Shift this but currently has a dependency on the levels array
@@ -91,7 +91,7 @@ export function SceneMain(args: SceneMainArgs) {
       k.play(SOUND_DECEND_PIPE);
 
       if (level >= maps.length) {
-        k.go("lose", { score: scoreLabel.score() });
+        k.go("lose", { k: k, score: scoreLabel.score() });
       } else {
         k.go("game", {
           k: k,

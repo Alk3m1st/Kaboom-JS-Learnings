@@ -6,3 +6,4 @@ export const SOUND_SQUASH_MUSHROOM: string = "squash-mushroom";
 export const SOUND_BLOCK_HIT: string = "block-hit";
 export const SOUND_PLAYER_DEATH: string = "player-death";
 export const SOUND_BACKGROUND_MUSIC: string = "background-music";
+export const SOUND_END_THEME: string = "end-theme";
