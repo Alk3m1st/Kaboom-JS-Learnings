@@ -35,9 +35,19 @@ export abstract class SystemMovement {
         let currentJumpForce = this.JUMP_FORCE;
         if (player.isBig()) currentJumpForce = this.BIG_JUMP_FORCE;
 
-        player.jump(currentJumpForce);  // Jump Sound
+        player.jump(currentJumpForce);
         k.play(SOUND_JUMP);
       }
     });
+  }
+
+  public static MoveScore(k: KaboomCtx, x: number, y: number) {
+    const scoreLabel: GameObj[] = k.get("score");
+
+    if(scoreLabel)
+      scoreLabel.map(sl => {
+        sl.pos.x = x;
+        sl.pos.y = y;
+      });
   }
 }

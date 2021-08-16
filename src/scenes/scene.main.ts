@@ -44,15 +44,20 @@ export function SceneMain(args: SceneMainArgs) {
     k.pos(4, 20),
     k.layer(LAYER_UI),
     ScoreComponent(score),
+    "score",
   ]);
   scoreLabel.on(INCREASE_SCORE, () => {
     scoreLabel.text = scoreLabel.score();
   });
 
+  scoreLabel.action(() => {
+    scoreLabel.text = `level ${
+      level + 1
+    }. FPS: ${k.debug.fps()}. Obj Count: ${k.debug.objCount()}\nScore: ${scoreLabel.score()}`;
+  });
+
   const levelCfg: LevelConf = SystemLevelConfig(k);
   const gameLevel = k.addLevel(maps[level], levelCfg);
-  k.add([k.text(`level ${level + 1}`), k.pos(4, 6)]);
-  level++; // Increment level for the next playthrough
 
   const playerEntity = new EntityPlayer(k);
   const player = playerEntity.Player;
@@ -77,6 +82,12 @@ export function SceneMain(args: SceneMainArgs) {
     if (player.pos.y >= FALL_DEATH) {
       k.go("lose", { k: k, score: scoreLabel.score() });
     }
+
+    SystemMovement.MoveScore(
+      k,
+      player.pos.x - k.width() / 2,
+      player.pos.y - k.height() / 2
+    );
   });
 
   // End game if player dies
@@ -93,6 +104,7 @@ export function SceneMain(args: SceneMainArgs) {
       if (level >= maps.length) {
         k.go("lose", { k: k, score: scoreLabel.score() });
       } else {
+        level++;
         k.go("game", {
           k: k,
           score: scoreLabel.score(),
